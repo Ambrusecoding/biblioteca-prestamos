@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Usuario } from '@prisma/client';
+import { CreateUsuarioDto } from './dto/create-usuario.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -11,6 +12,20 @@ export class UsuarioService {
       orderBy: {
         identificacionUsuario: 'asc',
       },
+    });
+  }
+
+  async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
+    const existingUsuario = await this.prisma.usuario.findUnique({
+      where: { identificacionUsuario: createUsuarioDto.identificacionUsuario },
+    });
+
+    if (existingUsuario) {
+      throw new ConflictException('El usuario ya existe');
+    }
+
+    return this.prisma.usuario.create({
+      data: createUsuarioDto,
     });
   }
 }

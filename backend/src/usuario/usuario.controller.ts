@@ -1,6 +1,7 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UsuarioService } from './usuario.service';
+import { CreateUsuarioDto } from './dto/create-usuario.dto';
 
 @ApiTags('usuarios')
 @Controller('api/usuario')
@@ -38,5 +39,22 @@ export class UsuarioController {
   })
   async findAll() {
     return this.usuarioService.findAll();
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: 'Crear un nuevo usuario',
+    description: 'Crea un nuevo usuario en el sistema.',
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Usuario creado exitosamente',
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'El usuario ya existe',
+  })
+  async create(@Body() createUsuarioDto: CreateUsuarioDto) {
+    return this.usuarioService.create(createUsuarioDto);
   }
 }

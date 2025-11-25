@@ -1,6 +1,7 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LibroService } from './libro.service';
+import { CreateLibroDto } from './dto/create-libro.dto';
 
 @ApiTags('libros')
 @Controller('api/libro')
@@ -37,5 +38,22 @@ export class LibroController {
   })
   async findAll() {
     return this.libroService.findAll();
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: 'Crear un nuevo libro',
+    description: 'Crea un nuevo libro en el sistema.',
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Libro creado exitosamente',
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'El libro ya existe',
+  })
+  async create(@Body() createLibroDto: CreateLibroDto) {
+    return this.libroService.create(createLibroDto);
   }
 }

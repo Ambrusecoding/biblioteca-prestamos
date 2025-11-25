@@ -1,0 +1,12 @@
+.lista-usuarios-table-container {
+  position: relative;
+}
+
+.lista-usuarios-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+

@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Libro } from '@prisma/client';
+import { CreateLibroDto } from './dto/create-libro.dto';
 
 @Injectable()
 export class LibroService {
@@ -11,6 +12,20 @@ export class LibroService {
       orderBy: {
         nombre: 'asc',
       },
+    });
+  }
+
+  async create(createLibroDto: CreateLibroDto): Promise<Libro> {
+    const existingLibro = await this.prisma.libro.findUnique({
+      where: { isbn: createLibroDto.isbn },
+    });
+
+    if (existingLibro) {
+      throw new ConflictException('El libro ya existe');
+    }
+
+    return this.prisma.libro.create({
+      data: createLibroDto,
     });
   }
 }

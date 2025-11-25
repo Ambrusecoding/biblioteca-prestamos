@@ -6,11 +6,16 @@ import { Table } from '../../molecules/Table/Table';
 import { SectionHeader } from '../../molecules/SectionHeader/SectionHeader';
 import { Loading } from '../../atoms/Loading/Loading';
 import { Badge } from '../../atoms/Badge/Badge';
+import { Button } from '../../atoms/Button/Button';
+import { Modal } from '../../molecules/Modal/Modal';
+import { FormCrearUsuario } from '../FormCrearUsuario/FormCrearUsuario';
+import './ListaUsuarios.css';
 
 export const ListaUsuarios = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -30,6 +35,29 @@ export const ListaUsuarios = () => {
 
     fetchUsuarios();
   }, []);
+
+  const handleRefresh = () => {
+    const fetchUsuarios = async () => {
+      try {
+        setLoading(true);
+        const data = await apiService.getUsuarios();
+        setUsuarios(data);
+        setError(null);
+      } catch (err: unknown) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'Error al cargar usuarios';
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsuarios();
+  };
+
+  const handleCreateSuccess = () => {
+    setIsModalOpen(false);
+    handleRefresh();
+  };
 
   const getTipoUsuarioLabel = (tipo: number) => {
     switch (tipo) {
@@ -92,13 +120,36 @@ export const ListaUsuarios = () => {
   }
 
   return (
-    <Card>
-      <SectionHeader
-        title="Usuarios"
-        subtitle={`Total: ${usuarios.length} usuarios registrados`}
-      />
-      <Table data={usuarios} columns={columns} emptyMessage="No hay usuarios registrados" />
-    </Card>
+    <>
+      <Card>
+        <SectionHeader
+          title="Usuarios"
+          subtitle={`Total: ${usuarios.length} usuarios registrados`}
+        />
+        <div className="lista-usuarios-table-container">
+          <Table data={usuarios} columns={columns} emptyMessage="No hay usuarios registrados" />
+          <div className="lista-usuarios-actions">
+            <Button
+              variant="primary"
+              onClick={() => setIsModalOpen(true)}
+            >
+              + Crear Usuario
+            </Button>
+          </div>
+        </div>
+      </Card>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Crear Nuevo Usuario"
+      >
+        <FormCrearUsuario
+          onSubmit={handleCreateSuccess}
+          onCancel={() => setIsModalOpen(false)}
+        />
+      </Modal>
+    </>
   );
 };
 

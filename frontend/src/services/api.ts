@@ -49,6 +49,59 @@ class ApiService {
 
     return response.json();
   }
+
+  async createUsuario(data: {
+    identificacionUsuario: string;
+    tipoUsuario: number;
+  }): Promise<Usuario> {
+    const response = await fetch(API_ENDPOINTS.usuarios, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      let errorMessage = `Error al crear usuario: ${response.statusText}`;
+      try {
+        const errorData = (await response.json()) as { message?: string };
+        if (errorData?.message) {
+          errorMessage = errorData.message;
+        }
+      } catch {
+        // Ignorar error de parsing
+      }
+      throw new Error(errorMessage);
+    }
+
+    return response.json();
+  }
+
+  async createLibro(data: { isbn: string; nombre: string }): Promise<Libro> {
+    const response = await fetch(API_ENDPOINTS.libros, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      let errorMessage = `Error al crear libro: ${response.statusText}`;
+      try {
+        const errorData = (await response.json()) as { message?: string };
+        if (errorData?.message) {
+          errorMessage = errorData.message;
+        }
+      } catch {
+        // Ignorar error de parsing
+      }
+      throw new Error(errorMessage);
+    }
+
+    return response.json();
+  }
 }
 
 export const apiService = new ApiService();
