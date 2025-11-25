@@ -5,7 +5,9 @@ Aplicación web React con Vite para gestionar usuarios, libros y préstamos de u
 ## Características
 
 - Dashboard interactivo con gestión de usuarios, libros y préstamos
-- Crear préstamos desde la interfaz
+- Crear usuarios, libros y préstamos desde la interfaz
+- Modales para formularios de creación
+- Validación de formularios en tiempo real
 - Diseño responsive
 - Arquitectura Atomic Design
 - TypeScript para type safety
@@ -77,13 +79,19 @@ El proyecto sigue la metodología Atomic Design:
 
 - **Atoms:** Componentes básicos (Button, Card, Badge, Loading, Title)
 - **Molecules:** Componentes compuestos (Table, Modal, Input, SectionHeader)
-- **Organisms:** Componentes complejos (ListaUsuarios, ListaLibros, ListaPrestamos, FormCrearPrestamo, Navigation)
+- **Organisms:** Componentes complejos (ListaUsuarios, ListaLibros, ListaPrestamos, FormCrearPrestamo, FormCrearUsuario, FormCrearLibro, Navigation)
 - **Templates:** Layouts (DashboardLayout)
 - **Pages:** Páginas completas (HomePage, UsuariosPage, LibrosPage, PrestamosPage)
 
 ## Funcionalidades
 
-El dashboard muestra usuarios, libros y préstamos en una interfaz dividida en dos paneles. Desde la sección de préstamos puedes crear nuevos préstamos seleccionando un usuario y un libro.
+El dashboard muestra usuarios, libros y préstamos en una interfaz dividida en dos paneles. Desde cada sección puedes:
+
+- **Usuarios:** Ver lista de usuarios y crear nuevos usuarios mediante un modal
+- **Libros:** Ver lista de libros y crear nuevos libros mediante un modal
+- **Préstamos:** Ver lista de préstamos y crear nuevos préstamos seleccionando un usuario y un libro
+
+Todos los formularios incluyen validación en tiempo real y manejo de errores.
 
 ## Configuración de API
 

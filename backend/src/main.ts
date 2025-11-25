@@ -34,7 +34,7 @@ async function bootstrap() {
 
     callback(new Error('Not allowed by CORS'));
   };
-
+  
   app.enableCors({
     origin:
       process.env.NODE_ENV !== 'production'

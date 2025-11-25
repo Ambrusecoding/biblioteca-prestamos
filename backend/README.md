@@ -116,10 +116,28 @@ Ver el diagrama entidad-relación en [DIAGRAMA-ER.md](./DIAGRAMA-ER.md).
 ### Usuarios
 
 - `GET /api/usuario` - Lista todos los usuarios
+- `POST /api/usuario` - Crea un nuevo usuario
+
+**Ejemplo de creación de usuario:**
+
+```bash
+curl -X POST http://localhost:3000/api/usuario \
+  -H "Content-Type: application/json" \
+  -d '{"identificacionUsuario": "1234567890", "tipoUsuario": 1}'
+```
 
 ### Libros
 
 - `GET /api/libro` - Lista todos los libros
+- `POST /api/libro` - Crea un nuevo libro
+
+**Ejemplo de creación de libro:**
+
+```bash
+curl -X POST http://localhost:3000/api/libro \
+  -H "Content-Type: application/json" \
+  -d '{"isbn": "978-0-123456-78-9", "nombre": "Cien años de soledad"}'
+```
 
 ### Préstamos
 
@@ -144,6 +162,8 @@ Una vez iniciado el servidor, accede a la documentación Swagger en:
 ## Reglas de Negocio
 
 - Los usuarios deben existir en la base de datos antes de crear un préstamo
+- No se pueden crear usuarios duplicados (misma identificación)
+- No se pueden crear libros duplicados (mismo ISBN)
 - Usuarios tipo 3 (Invitado) solo pueden tener 1 préstamo activo
 - Fechas de devolución se calculan en días hábiles (excluye fines de semana):
   - Afiliado (1): 10 días
@@ -179,7 +199,3 @@ Las pruebas cubren casos de éxito, validaciones de negocio y manejo de errores.
 - SQLite (en memoria)
 - Swagger/OpenAPI
 - Jest (testing)
-
-## Deployment
-
-Para información detallada ver [DEPLOYMENT.md](./DEPLOYMENT.md)
