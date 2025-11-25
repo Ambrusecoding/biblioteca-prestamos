@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// 1. Configuración del generador del cliente
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
+}
+
+// 2. Configuración de la fuente de datos (SQLite)
+// Nota: En Prisma 7, la URL se configura en prisma.config.ts
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  // 1. Tabla Usuario
+  identificacionUsuario String @id @map("identificacion_usuario")
+  tipoUsuario           Int    @map("tipo_usuario") // 1, 2, o 3
+
+  prestamos Prestamo[] // Relación 1-a-Muchos
+
+  @@map("usuario")
+}
+
+model Libro {
+  // 2. Tabla Libro
+  isbn   String @id
+  nombre String @map("nombre_libro")
+
+  prestamos Prestamo[]
+
+  @@map("libro")
+}
+
+// 3. Definición del Modelo Prestamo
+
+model Prestamo {
+  // 3. Tabla Prestamo (Relación)
+  id String @id @default(uuid())
+
+  // Claves Foráneas explícitas
+  isbn                  String
+  identificacionUsuario String @map("identificacion_usuario")
+
+  // Campo nuevo de la lógica
+  fechaPrestamo         DateTime @default(now()) @map("fecha_prestamo") // Fecha real de hoy
+  fechaMaximaDevolucion DateTime @map("fecha_maxima_devolucion")
+
+  // Relaciones explícitas con las otras tablas
+  libro   Libro   @relation(fields: [isbn], references: [isbn])
+  usuario Usuario @relation(fields: [identificacionUsuario], references: [identificacionUsuario])
+
+  @@map("prestamo")
+}

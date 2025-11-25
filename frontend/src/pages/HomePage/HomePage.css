@@ -1,0 +1,35 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.home-hero {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.home-subtitle {
+  color: #6b7280;
+  font-size: 1.125rem;
+  margin-top: 0.5rem;
+}
+
+.home-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.home-section-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.home-section-card p {
+  color: #6b7280;
+  flex-grow: 1;
+  margin: 0;
+}
+

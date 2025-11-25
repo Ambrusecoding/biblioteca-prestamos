@@ -1,0 +1,11 @@
+export enum USER_TYPES {
+  AFILIADO = 1,
+  EMPLEADO = 2,
+  INVITADO = 3,
+}
+
+export enum DEVOLUTION_DAYS {
+  AFILIADO_DAYS = 10,
+  EMPLEADO_DAYS = 8,
+  INVITADO_DAYS = 7,
+}
